@@ -1,0 +1,42 @@
+{
+  "name": "send-me-quotes",
+  "version": "1.0.0",
+  "description": "NodeJS Server to send quotes via SMS",
+  "main": "server.js",
+  "scripts": {
+    "test": "cd tests && mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-hebert/send-me-quotes.git"
+  },
+  "keywords": [
+    "quote",
+    "sms",
+    "self-help"
+  ],
+  "author": "Philippe Hebert (@p-hebert)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/p-hebert/send-me-quotes/issues"
+  },
+  "homepage": "https://github.com/p-hebert/send-me-quotes#readme",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "express": "4.14.0",
+    "express-session": "1.14.1",
+    "mongo-sanitize": "1.0.0",
+    "mongodb": "2.2.11",
+    "mongoose": "4.6.5",
+    "plivo": "0.4.0"
+  },
+  "devDependencies": {
+    "chalk": "1.1.3",
+    "inquirer": "1.2.2",
+    "mocha": "0.3.x",
+    "nodemon": "1.11.0",
+    "should": "^11.1.1",
+    "supertest": "^2.0.0"
+  }
+}
