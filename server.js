@@ -6,11 +6,6 @@ const mongoose = require('mongoose');
 const env = process.env.NODE_ENV || 'development';
 const config = require('.config/index')[env];
 
-//Setting up Mongoose ES6 Promises
-mongoose.Promise = global.Promise;
-// Database Connection
-mongoose.connect(`mongodb://${config.mongodb.user}:${config.mongodb.password}@${config.mongodb.host}:${config.mongodb.port}/${config.mongodb.dbname}`);
-
 // App
 const app = express();
 app.use(bodyParser.json());

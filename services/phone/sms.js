@@ -1,6 +1,6 @@
 const plivo = require('plivo');
 const env = process.env.NODE_ENV || 'development';
-const config = require('../.config/index')[env];
+const config = require('../../.config/index')[env];
 
 module.exports = {
   send: send

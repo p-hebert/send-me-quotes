@@ -21,15 +21,15 @@ describe("Send-Me-Quotes Testing Suite", function () {
         importTest(tests[key].name, tests[key].path);
       }
     }
+    if(envtests.indexOf('phone') !== -1){
+      importTest("SMS Validation Code Testing", './sms/test.js');
+    }
   }else{
     for(let key in tests){
       importTest(tests[key].name, tests[key].path);
     }
   }
 
-  if(process.env.TEST_PHONE){
-    importTest("SMS Functionality Testing", './sms/test.js');
-  }
   after(function(done){ clearUserDb(done); });
 });
 
