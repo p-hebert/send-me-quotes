@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/routes');
 const mongoose = require('mongoose');
 const env = process.env.NODE_ENV || 'development';
-const config = require('.config/index')[env];
+const config = require('../.config/index')[env];
 
 // App
 const app = express();

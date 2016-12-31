@@ -1,6 +1,6 @@
 "use strict";
 
-const xss = require('../secure/xss');
+const xss = require('../services/secure/xss');
 
 module.exports = function(res){
   return function(err){

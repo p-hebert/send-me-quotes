@@ -1,6 +1,6 @@
 const chalk = require('chalk');
-const models = require('../../../models/index');
-const secure = require('../hash');
+const models = require('../../models/index');
+const secure = require('../secure/hash');
 const mongo_sanitize = require('mongo-sanitize');
 
 const User = models.User;

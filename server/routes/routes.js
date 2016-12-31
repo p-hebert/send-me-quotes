@@ -1,6 +1,6 @@
 'use strict';
 const express = require('express');
-const handlers = require('handlers/index');
+const handlers = require('../handlers/index');
 const auth = require('../services/auth/index');
 
 module.exports = (function() {

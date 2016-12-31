@@ -1,5 +1,4 @@
-const models = require('../../../models/index');
-const exportFilter = require('../export/index');
+const models = require('../../models/index');
 
 const User = models.User;
 

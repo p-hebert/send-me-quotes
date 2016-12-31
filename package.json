@@ -1,0 +1,26 @@
+{
+  "name": "send-me-quotes",
+  "version": "1.0.0",
+  "description": "Send Me Quote",
+  "main": "server.js",
+  "scripts": {
+    "start": "cd docker && ./docker-start.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-hebert/send-me-quotes.git"
+  },
+  "keywords": [
+    "quote",
+    "sms",
+    "self-help"
+  ],
+  "author": "Philippe Hebert (@p-hebert)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/p-hebert/send-me-quotes/issues"
+  },
+  "homepage": "https://github.com/p-hebert/send-me-quotes#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,25 @@
+version: '2.0'
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: ./server-dockerfile
+    container_name: smqserver
+    ports:
+     - "8888:8080"
+    links:
+      - mongodb:mongodb
+    depends_on:
+     - mongodb
+    environment:
+     - DATABASE_HOST=mongodb
+    volumes:
+     - ../server:/var/www/smq
+     - ../.config:/var/www/.config
+  mongodb:
+    build:
+      context: ./
+      dockerfile: ./mongodb-dockerfile
+    container_name: smqmongodb
+    volumes:
+     - /var/lib/mongodb/data

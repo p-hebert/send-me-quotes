@@ -1,5 +1,5 @@
 {
-  "name": "send-me-quotes",
+  "name": "send-me-quotes server",
   "version": "1.0.0",
   "description": "NodeJS Server to send quotes via SMS",
   "main": "server.js",
