@@ -54,44 +54,9 @@ function validate_user(update, user) {
             refused = true;
             errors[key] = "Invalid format for phone number";
           }
-
           break;
         case 'password':
-          //requires 'password', 'confirm', and 'oldPassword' fields to be passed
-          //for validation to proceed.
-
-          //check for old password
-          //type cast to string (cause you know some people like bad passwords)
-          update.oldPassword = validator.numToString(update.oldPassword);
-          update.password = validator.numToString(update.password);
-          update.confirm = validator.numToString(update.confirm);
-
-          //Catches invalid formats for old password
-          if(update.oldPassword !== null && typeof update.oldPassword !== "string" || !validator.isAscii(update.oldPassword)){
-            refused = true;
-            errors.oldPassword = "Current password is needed to change password";
-          //Matches old password against db
-          } else if (update.password !== null && secure.validate_pwd_hash(update.oldPassword, user.salt, user.password)) {
-            //password
-            //Validates format of new password
-            if (validator.isAscii(update.password)) {
-              let pwdHash = secure.generatePwdHash(update.password);
-              validated.password = pwdHash.passwordHash;
-              validated.salt = pwdHash.salt;
-            } else {
-              refused = true;
-              errors.password = "Invalid characters used in password. Use ASCII characters";
-            }
-            //confirm password
-            if (errors.password || !(typeof update.confirm === 'string') || !validator.isAscii(update.confirm) ||
-            !update.hasOwnProperty('password') || !validator.equals(update.confirm, update.password)) {
-              refused = true;
-              errors.confirm = "Passwords do not match";
-            }
-          } else {
-            refused = true;
-            errors.oldPassword = "Invalid password";
-          }
+          validate_password(update, user, validated, refused, errors);
           break;
         default:
           break;
@@ -107,4 +72,63 @@ function validate_user(update, user) {
     refused: refused,
     errors: errors
   };
+}
+
+function validate_password(update, user, validated, refused, errors){
+  update.password = update.password + "";
+  update.confirm = update.confirm + "";
+
+  //Registering
+  if(!user){
+    //password
+    //Validates format of new password
+    if (validator.isAscii(update.password)) {
+      let pwd = secure.hash(update.password);
+      validated.password = pwd.hash;
+      validated.salt = pwd.salt;
+    } else {
+      refused = true;
+      errors.password = "Invalid characters used in password. Use ASCII characters";
+    }
+    //confirm password
+    if (errors.password || !(typeof update.confirm === 'string') || !validator.isAscii(update.confirm) ||
+    !update.hasOwnProperty('password') || !validator.equals(update.confirm, update.password)) {
+      refused = true;
+      errors.confirm = "Passwords do not match";
+    }
+  //Updating
+  }else{
+    //requires 'password', 'confirm', and 'oldPassword' fields to be passed
+    //for validation to proceed.
+    update.oldPassword = update.oldPassword + "";
+    update.password = update.password + "";
+    update.confirm = update.confirm + "";
+
+    //Catches invalid formats for old password
+    if(update.oldPassword !== null && typeof update.oldPassword !== "string" || !validator.isAscii(update.oldPassword)){
+      refused = true;
+      errors.oldPassword = "Current password is needed to change password";
+    //Matches old password against db
+    } else if (update.password !== null && secure.validate_pwd_hash(update.oldPassword, user.salt, user.password)) {
+      //password
+      //Validates format of new password
+      if (validator.isAscii(update.password)) {
+        let pwd = secure.hash(update.password);
+        validated.password = pwd.hash;
+        validated.salt = pwd.salt;
+      } else {
+        refused = true;
+        errors.password = "Invalid characters used in password. Use ASCII characters";
+      }
+      //confirm password
+      if (errors.password || !(typeof update.confirm === 'string') || !validator.isAscii(update.confirm) ||
+      !update.hasOwnProperty('password') || !validator.equals(update.confirm, update.password)) {
+        refused = true;
+        errors.confirm = "Passwords do not match";
+      }
+    } else {
+      refused = true;
+      errors.oldPassword = "Invalid password";
+    }
+  }
 }

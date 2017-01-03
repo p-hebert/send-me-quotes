@@ -7,7 +7,7 @@ module.exports = {
 }
 
 function register(req, res) {
-  res.json({user: xss(req.user)});
+  res.sendStatus(200);
 }
 
 function login(req, res) {

@@ -23,7 +23,7 @@ function register(req, res, next) {
 function local_register(req, res, next){
   var vuser = validate.user(mongo_sanitize(req.body));
   var catcher = catcher(res);
-  if(!vuser.refused){
+  if(!vuser.refused && has_mandatory_fields(vuser.validated)){
     let vuser = vuser.validated;
     return User.findOne({ $or: [{email: vuser.email}, {username: vuser.username}]})
     .then(user => {
@@ -35,25 +35,34 @@ function local_register(req, res, next){
           password: pwd.hash,
           salt: pwd.salt,
           phone: vuser.phone,
-          country: vuser.country,
+          country: vuser.country || null,
         });
         return user.save();
       }else{
         let errors = {};
-        errors.email = user.email === body.email ? true : undefined;
-        errors.username = user.username === body.username ? true : undefined;
+        errors.email = user.email === vuser.email ? true : undefined;
+        errors.username = user.username === vuser.username ? true : undefined;
         return Promise.reject({
           status: 400,
           message: 'User already exists',
           errors: errors
         });
       }
-    }).then((user) => {
-      req.sendStatus(200);
+    }).then(() => {
       next();
     }).catch(catcher);
   }else{
     return Promise.reject({status: 400, message: "Validation error(s)", errors: vuser.errors})
     .catch(catcher);
   }
+}
+
+function has_mandatory_fields(user){
+  const fields = ["username", "email", "password", "phone", "country"];
+  for(let i = 0 ; i < fields.length; i++){
+    if(user[fields[i]] === undefined){
+      return false;
+    }
+  }
+  return true;
 }
