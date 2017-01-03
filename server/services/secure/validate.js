@@ -39,7 +39,7 @@ function validate_user(update, user) {
             errors.Barber[key] = "Invalid country";
           }
           break;
-        case 'phoneNumber':
+        case 'phone':
           try {
             update[key] = validator.numToString(update[key]);
             if (!Number.isNaN(update[key]) && validator.isAnyPhone(update[key])) {

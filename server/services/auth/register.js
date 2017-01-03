@@ -5,8 +5,6 @@ const secure = require('../secure/hash');
 const mongo_sanitize = require('mongo-sanitize');
 const validate = require('../secure/validate');
 const catcher = require('../../utilities/catcher');
-
-
 const User = models.User;
 
 module.exports = register;
@@ -22,11 +20,12 @@ function register(req, res, next) {
 
 function local_register(req, res, next){
   var vuser = validate.user(mongo_sanitize(req.body));
-  var catcher = catcher(res);
-  if(!vuser.refused && has_mandatory_fields(vuser.validated)){
-    let vuser = vuser.validated;
+  var missing = missing_fields(vuser.validated);
+  if(!vuser.refused && !missing.length){
+    vuser = vuser.validated;
     return User.findOne({ $or: [{email: vuser.email}, {username: vuser.username}]})
     .then(user => {
+      console.log(user);
       if (user === null) {
         let pwd = secure.hash(vuser.password);
         user = new User({
@@ -40,8 +39,8 @@ function local_register(req, res, next){
         return user.save();
       }else{
         let errors = {};
-        errors.email = user.email === vuser.email ? true : undefined;
-        errors.username = user.username === vuser.username ? true : undefined;
+        errors.email = user.email === vuser.email ? true : false;
+        errors.username = user.username === vuser.username ? true : false;
         return Promise.reject({
           status: 400,
           message: 'User already exists',
@@ -50,19 +49,23 @@ function local_register(req, res, next){
       }
     }).then(() => {
       next();
-    }).catch(catcher);
+    }).catch(catcher(res));
+  }else if(missing.length){
+    return Promise.reject({status: 400, message: `Missing fields: ${missing.join(', ')}`, errors: {fields: missing}})
+    .catch(catcher(res));
   }else{
     return Promise.reject({status: 400, message: "Validation error(s)", errors: vuser.errors})
-    .catch(catcher);
+    .catch(catcher(res));
   }
 }
 
-function has_mandatory_fields(user){
+function missing_fields(user) {
   const fields = ["username", "email", "password", "phone", "country"];
+  const missing = [];
   for(let i = 0 ; i < fields.length; i++){
     if(user[fields[i]] === undefined){
-      return false;
+      missing.push(fields[i]);
     }
   }
-  return true;
+  return missing;
 }

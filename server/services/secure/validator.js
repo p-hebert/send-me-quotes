@@ -1,6 +1,7 @@
 "use strict";
 
-const countries = require('../../static/countries.json');
+const countries = Object.keys(require('../../static/countries.json'))
+                        .map((c) => { return c.toLowerCase(); });
 const moment = require('moment');
 var validator = require('validator');
 
@@ -68,6 +69,13 @@ validator.number = {
   }
 };
 
+validator.isUsername = function(text) {
+  const regex = /^[a-zA-Z0-9\-_\.]+$/;
+  const maxlength = 16;
+  const minlength = 4;
+  return text.length <= maxlength && text.length >= minlength && !!text.trim().match(regex);
+};
+
 validator.isName = function(text) {
   //For internationalization, use \p{L} instead of [a-zA-Z]
   //Currently no support in core javascript
@@ -81,8 +89,7 @@ validator.isCity = function(text) {
 };
 
 validator.isCountry = function(text) {
-  const list = Object.keys(countries);
-  return list.indexOf(text) !== -1;
+  return countries.indexOf(text.toLowerCase()) !== -1;
 };
 
 validator.isValidGender = function(text){

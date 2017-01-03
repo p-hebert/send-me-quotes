@@ -7,11 +7,23 @@ module.exports = (function() {
 
   var router = express.Router();
 
-  router.post('/login', auth.login, handlers.session.login);
+  router.use(function(req, res, next){
+    console.log(
+     '\n'+
+     `Host: ${req.headers.host}\n`+
+     `Request: ${req.method} ${req.url}\n`+
+     `Session User: ${req.session.user}\n`
+    );
+    next();
+  });
 
-  router.get('/logout', auth.logout, handlers.session.logout);
+  router.post('/u/login', auth.login, handlers.session.login);
 
-  router.post('/register', auth.register, handlers.session.register);
+  router.get('/u/logout', auth.logout, handlers.session.logout);
+
+  router.post('/u/exists', auth.exists);
+
+  router.post('/u/register', auth.register, handlers.session.register);
 
   return router;
 
