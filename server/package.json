@@ -1,5 +1,5 @@
 {
-  "name": "send-me-quotes server",
+  "name": "send-me-quotes",
   "version": "1.0.0",
   "description": "NodeJS Server to send quotes via SMS",
   "main": "server.js",
@@ -26,10 +26,12 @@
     "body-parser": "1.15.2",
     "express": "4.14.0",
     "express-session": "1.14.1",
+    "moment": "2.17.1",
     "mongo-sanitize": "1.0.0",
     "mongodb": "2.2.11",
     "mongoose": "4.6.5",
-    "plivo": "0.4.0"
+    "plivo": "0.4.0",
+    "validator": "6.2.0"
   },
   "devDependencies": {
     "chalk": "1.1.3",
