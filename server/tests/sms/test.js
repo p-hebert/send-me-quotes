@@ -20,12 +20,12 @@ it('should send an SMS code to the specified phone number', function() {
   ];
   return prompt(questions)
     .then(function(answer) {
-      return [answer.number, code];
+      return [answer.number, `SMQ Test: ${code}`];
     })
-    .spread(sms.send)
-    .then(function() {
-      return Promise.resolve();
-    }).catch(err => {
+    .then((result) => {
+      return sms.send(result[0], result[1]);
+    })
+    .catch((err) => {
       return Promise.reject(new Error(err.body.error));
     });
 });
