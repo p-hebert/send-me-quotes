@@ -44,7 +44,7 @@ function clearUserDb(done){
   .then(() => {
     return User.find(userData);
   }).then((result) => {
-    assert.ok(result === null);
+    assert.equal(result.length, 0);
     done();
   });
 }
