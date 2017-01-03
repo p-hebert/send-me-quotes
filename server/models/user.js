@@ -15,7 +15,7 @@ var QuoteModSchema = new Schema({
   alteredText: String,
 });
 
-module.exports = new Schema({
+var UserSchema = new Schema({
   username: String,
   email: String,
   password: String,
@@ -26,3 +26,5 @@ module.exports = new Schema({
   sets: [QuoteSetSchema],
   notes: [QuoteModSchema]
 });
+
+module.exports = UserSchema;

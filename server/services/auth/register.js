@@ -3,6 +3,7 @@
 const models = require('../../models/index');
 const secure = require('../secure/hash');
 const mongo_sanitize = require('mongo-sanitize');
+const validate = require('../secure/validate');
 const catcher = require('../../utilities/catcher');
 
 
@@ -20,39 +21,39 @@ function register(req, res, next) {
 }
 
 function local_register(req, res, next){
-  var body = mongo_sanitize(req.body);
-  return User.findOne({ $or: [{email: body.email}, {username: body.username}]})
-  .then(user => {
-    if (user === null) {
-      if (typeof body.password === "string") {
-        let pwd = secure.hash(body.password);
+  var vuser = validate.user(mongo_sanitize(req.body));
+  var catcher = catcher(res);
+  if(!vuser.refused){
+    let vuser = vuser.validated;
+    return User.findOne({ $or: [{email: vuser.email}, {username: vuser.username}]})
+    .then(user => {
+      if (user === null) {
+        let pwd = secure.hash(vuser.password);
         user = new User({
-          username: body.username,
-          email: body.email,
+          username: vuser.username,
+          email: vuser.email,
           password: pwd.hash,
           salt: pwd.salt,
-          phone: body.phone,
-          country: body.country,
+          phone: vuser.phone,
+          country: vuser.country,
         });
         return user.save();
-      } else {
+      }else{
+        let errors = {};
+        errors.email = user.email === body.email ? true : undefined;
+        errors.username = user.username === body.username ? true : undefined;
         return Promise.reject({
           status: 400,
-          message: 'Validation Error(s)',
-          errors: { password: 'Improper password type' }
+          message: 'User already exists',
+          errors: errors
         });
       }
-    }else{
-      let errors = {};
-      errors.email = user.email === body.email ? true : undefined;
-      errors.username = user.username === body.username ? true : undefined;
-      return Promise.reject({
-        status: 400,
-        message: 'User already exists',
-        errors: errors
-      });
-    }
-  }).then((user) => {
-    req.sendStatus(200);
-  }).catch(catcher(res));
+    }).then((user) => {
+      req.sendStatus(200);
+      next();
+    }).catch(catcher);
+  }else{
+    return Promise.reject({status: 400, message: "Validation error(s)", errors: vuser.errors})
+    .catch(catcher);
+  }
 }
