@@ -11,15 +11,35 @@ services:
       - mongodb:mongodb
     depends_on:
      - mongodb
-    environment:
-     - DATABASE_HOST=mongodb
+  #   - rsyslog
+  #  logging:
+  #    driver: syslog
+  #    options:
+  #      syslog-address: "udp://127.0.0.1:5514"
+  #      syslog-facility: daemon
+  #      tag: smqserver
     volumes:
      - ../server:/var/www/smq
      - ../.config:/var/www/.config
   mongodb:
     build:
-      context: ./
-      dockerfile: ./mongodb-dockerfile
+      context: ../
+      dockerfile: ./docker/mongodb-dockerfile
     container_name: smqmongodb
+  #  depends_on:
+  #   - rsyslog
+  #  logging:
+  #    driver: syslog
+  #    options:
+  #      syslog-address: "udp://127.0.0.1:5514"
+  #      syslog-facility: daemon
+  #      tag: smqmongodb
     volumes:
-     - /var/lib/mongodb/data
+     - /data/db
+  #rsyslog:
+  #  image: voxxit/rsyslog
+  #  container_name: smqrsyslog
+  #  ports:
+  #    - "5514:514/udp"
+  #  volumes:
+  #    - /tmp:/var/log/syslog

@@ -29,9 +29,6 @@ WORKDIR /var/www/smq
 # Install nodemon for global use
 RUN npm install nodemon --global
 
-# Bundle app source
-COPY . /var/www/smq
-
 EXPOSE 8080
 
 CMD [ "/bin/sh", "./start.sh" ]

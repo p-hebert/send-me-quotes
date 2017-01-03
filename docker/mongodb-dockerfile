@@ -1,6 +1,16 @@
 FROM mongo:3.4
 
-ENV MONGODB_USER smqdbuser
-ENV MONGODB_PASSWORD Mie8waiL3eiFeeg7aiH6
-ENV MONGODB_DATABASE smqdb
-ENV MONGODB_ADMIN_PASSWORD Ohwangua2Co5uuy0at1z
+#Installing Node
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g mongoose
+
+#Setting Up Mongo
+WORKDIR /var/www/smq
+COPY ./docker/mongo-setup.js mongo-setup.js
+COPY ./.config/mongo /var/www/.config/mongo
+#RUN mongod --port 27017 & node mongo-setup.js && mongod --shutdown
+
+#CMD ["mongod", "--auth", "--port", "27017"]
