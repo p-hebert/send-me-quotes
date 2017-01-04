@@ -1,11 +1,9 @@
-'use strict';
+"use strict";
 
-const secure = require('./hash');
+const secure = require('../hash');
 const validator = require('./validator');
 
-module.exports = {
-  user: validate_user
-};
+module.exports = validate_user;
 
 function validate_user(update, user) {
   var validated = {};

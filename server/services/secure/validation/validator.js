@@ -1,6 +1,6 @@
 "use strict";
 
-const countries = Object.keys(require('../../static/countries.json'))
+const countries = Object.keys(require('../../../static/countries.json'))
                         .map((c) => { return c.toLowerCase(); });
 const moment = require('moment');
 var validator = require('validator');

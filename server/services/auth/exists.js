@@ -1,6 +1,6 @@
 const models = require('../../models/index');
 const mongo_sanitize = require('mongo-sanitize');
-const validate = require('../secure/validate');
+const validate = require('../secure/validation/index');
 const catcher = require('../../utilities/catcher');
 const User = models.User;
 
