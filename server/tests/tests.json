@@ -1,0 +1,6 @@
+{
+  "auth": {
+    "name": "Integration test for authentication endpoints",
+    "path": "./auth/test.js"
+  }
+}

@@ -1,10 +1,8 @@
 "use strict";
 
 const common = require("./common/index");
-
+const tests = require("./tests.json");
 const User = models.User;
-
-const tests = {};
 
 function importTest(name, path) {
   describe(name, function () {
@@ -36,11 +34,11 @@ describe("Send-Me-Quotes Testing Suite", function () {
 function clearUserDb(done){
   var userData = {
     email: {
-      $in: ["qtest@abc.com"]
+      $in: ["qtest10@abc.com"]
     }
   };
 
-  User.find(userData).remove()
+  User.remove(userData)
   .then(() => {
     return User.find(userData);
   }).then((result) => {
