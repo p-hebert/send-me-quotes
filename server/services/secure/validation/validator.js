@@ -1,7 +1,9 @@
 "use strict";
 
-const countries = Object.keys(require('../../../static/countries.json'))
-                        .map((c) => { return c.toLowerCase(); });
+const countries = require('../../../static/countries.json')
+                  .map((c) => { return {name: c.name.toLowerCase(), code: c.code }; });
+const languages = require('../../../static/countries.json')
+                  .map((c) => { return {name: c.name, code: c.code.toLowerCase() }; });
 const moment = require('moment');
 var validator = require('validator');
 
@@ -89,7 +91,13 @@ validator.isCity = function(text) {
 };
 
 validator.isCountry = function(text) {
-  return countries.indexOf(text.toLowerCase()) !== -1;
+  return typeof text === "string" &&
+         countries.findIndex((c) => { return c['name'] === text.toLowerCase(); }) !== -1;
+};
+
+validator.isLanguage = function(text) {
+  return typeof text === "string" &&
+         languages.findIndex((c) => { return c['code'] === text.toLowerCase(); }) !== -1;
 };
 
 validator.isValidGender = function(text){

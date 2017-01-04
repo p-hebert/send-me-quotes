@@ -34,7 +34,7 @@ function validate_user(update, user) {
             validated[key] = update[key];
           } else {
             refused = true;
-            errors.Barber[key] = "Invalid country";
+            errors[key] = "Invalid country";
           }
           break;
         case 'phone':
