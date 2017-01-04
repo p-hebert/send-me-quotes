@@ -11,7 +11,6 @@ module.exports = {
 
 function request(req, res) {
   var vuser = validate.user(mongo_sanitize(req.body));
-  console.log(vuser);
   if(!vuser.refused){
     vuser = vuser.validated;
     return User.findOne({ $or: [{email: vuser.email}, {username: vuser.username}]})

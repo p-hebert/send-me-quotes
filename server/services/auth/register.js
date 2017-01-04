@@ -25,14 +25,12 @@ function local_register(req, res, next){
     vuser = vuser.validated;
     return User.findOne({ $or: [{email: vuser.email}, {username: vuser.username}]})
     .then(user => {
-      console.log(user);
       if (user === null) {
-        let pwd = secure.hash(vuser.password);
         user = new User({
           username: vuser.username,
           email: vuser.email,
-          password: pwd.hash,
-          salt: pwd.salt,
+          password: vuser.password,
+          salt: vuser.salt,
           phone: vuser.phone,
           country: vuser.country || null,
         });
@@ -60,7 +58,7 @@ function local_register(req, res, next){
 }
 
 function missing_fields(user) {
-  const fields = ["username", "email", "password", "phone", "country"];
+  const fields = ["username", "email", "password", "phone"];
   const missing = [];
   for(let i = 0 ; i < fields.length; i++){
     if(user[fields[i]] === undefined){

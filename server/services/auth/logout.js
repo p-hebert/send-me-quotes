@@ -6,6 +6,8 @@ function logout(req, res, next) {
       req.session.destroy(function(err) {
         if(err){
           res.status(500).json({message: 'Could not destroy session.'});
+          req.session = {};
+          req.user = undefined;
         }else{
           next();
         }

@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const models = require('../../models/index');
 const secure = require('../secure/hash');
 const mongo_sanitize = require('mongo-sanitize');
@@ -25,14 +24,19 @@ function local_login(req, res, next) {
     payload.email = mongo_sanitize(req.body.email);
   }
   return User.find(payload)
-  .then(user => {
-    if (!user || user.password === null) {
+  .then(results => {
+    if (!results.length || results.password === null) {
+      console.log("HTTP 401: User doesn't exist");
       unauthorized(req, res, next);
-    } else if (!secure.validate_pwd_hash(password, user.salt, user.password)) {
+    } else if (results.length === 1 && !secure.match(password, results[0].salt, results[0].password)) {
+      console.log(`HTTP 401: Credentials didn't match`);
       unauthorized(req, res, next);
+    } else if (results.length > 1) {
+      server_error(req, res, "Inconsistent Database: More than one user matched the username / email");
     } else {
-      User.update({lastLogin: new Date(Date.now())}, {where : {id : user.id}});
-      store_user(req, user);
+      console.log("HTTP 200: Successful Login");
+      User.update({lastLogin: new Date(Date.now())}, {where : {id : results[0].id}});
+      store_user(req, results[0]);
       next();
     }
   }).catch(err => {
@@ -61,11 +65,11 @@ function server_error(req, res, err){
 }
 
 function unauthorized(req, res, next) {
-  console.log("Unauthorized");
+  console.log("HTTP 401: Unauthorized");
   if (req.session && req.session.destroy) {
     req.session.destroy(function(err) {
       if (err) {
-        console.error(chalk.red(err));
+        console.error(err);
       }
       res.status(401).json({
         message: 'Incorrect email or password.'

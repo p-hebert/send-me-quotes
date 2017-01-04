@@ -1,20 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var QuoteSetSchema = new Schema({
-  name: {type:String, required:true},
-  quotes: [Schema.Types.ObjectId],
-  tags: [String],
-  authors: [Schema.Types.ObjectId],
-  sources: [Schema.Types.ObjectId],
-});
-
-var QuoteModSchema = new Schema({
-  quote: Schema.Types.ObjectId,
-  note: String,
-  alteredText: String,
-});
-
 var UserSchema = new Schema({
   username: String,
   email: String,
@@ -30,8 +16,18 @@ var UserSchema = new Schema({
   phoneCodeValidUntil: String,
   country: String,
   lastLogin: Date,
-  sets: [QuoteSetSchema],
-  notes: [QuoteModSchema]
+  notes: [{
+    quote: Schema.Types.ObjectId,
+    note: String,
+    alteredText: String,
+  }],
+  sets: [{
+    name: {type:String, required:true},
+    quotes: [Schema.Types.ObjectId],
+    tags: [String],
+    authors: [Schema.Types.ObjectId],
+    sources: [Schema.Types.ObjectId],
+  }]
 });
 
 module.exports = UserSchema;
