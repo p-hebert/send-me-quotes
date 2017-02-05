@@ -1,0 +1,227 @@
+[
+  {
+    "name": "VALIDATION",
+    "description": "Common validation errors",
+    "status": 400,
+    "children": [
+      {
+        "name": "DEFAULT",
+        "description": "Common validation errors",
+        "status": "inherit",
+        "children": [
+          {
+            "name": "BASE",
+            "description": "Validation Error(s)",
+            "status": "inherit"
+          },
+          {
+            "name": "MISSING_FIELDS",
+            "description": "Some fields were found to be missing during validation",
+            "status": "inherit"
+          },
+          {
+            "name": "EMPTY_OBJECT",
+            "description": "Request body is empty or does not have any fields",
+            "status": "inherit"
+          },
+          {
+            "name": "NOT_FOUND",
+            "description": "The requested object was not found",
+            "status": 404
+          },
+          {
+            "name": "ACTION_ALREADY_DONE",
+            "description": "The action requested has already been done and cannot be repeated",
+            "status": 208
+          }
+        ]
+      },
+      {
+        "name": "SEARCH",
+        "description": "Validation errors specific to search routes",
+        "status": 400,
+        "children": [
+          {
+            "name": "NO_QUERY_PARAMS",
+            "description": "The search query requires search operators",
+            "status": "inherit"
+          }
+        ]
+      },
+      {
+        "name": "PHONE",
+        "description": "Validation errors specific to phone setup routes",
+        "status": "inherit",
+        "children": [
+          {
+            "name": "PHONE_NOT_SET",
+            "description": "The phone number is not set",
+            "status": 408
+          },
+          {
+            "name": "CODE_EXPIRED",
+            "description": "The validation code expired",
+            "status": 408
+          },
+          {
+            "name": "INCORRECT_CODE",
+            "description": "",
+            "status": 408
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SETUP",
+    "description": "Setup errors",
+    "status": 500,
+    "children": [
+      {
+        "name": "ELASTICSEARCH",
+        "description": "Setup errors pertaining to ElasticSearch",
+        "status": "inherit",
+        "children": [
+          {
+            "name": "UNAVAILABLE",
+            "description": "ElasticSearch connection failed. Is ElasticSearch up and available via TCP/IP on your machine?",
+            "status": "inherit"
+          },
+          {
+            "name": "UNAUTHORIZED",
+            "description": "ElasticSearch connection failed with an unauthorized status",
+            "status": "inherit"
+          }
+        ]
+      },
+      {
+        "name": "MONGODB",
+        "description": "Setup errors pertaining to MongoDB",
+        "status": "inherit",
+        "children": [
+          {
+            "name": "UNAVAILABLE",
+            "description": "MongoDB connection failed. Is MongoDB up and available via TCP/IP on your machine?",
+            "status": "inherit"
+          },
+          {
+            "name": "UNAUTHORIZED",
+            "description": "MongoDB connection failed with an unauthorized status",
+            "status": "inherit"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "AUTHORIZATION",
+    "description": "Authorization errors",
+    "status": 401,
+    "children": [
+      {
+        "name": "INSUFFICIENT",
+        "description": "Insufficient privileges to access functionality",
+        "status": 402,
+        "children": [
+          {
+            "name": "ADMIN_PRIVILEGES_REQUIRED",
+            "description": "This functionality is only available for administrators",
+            "status": "inherit"
+          },
+          {
+            "name": "UNAUTHORIZED",
+            "description": "Invalid credentials",
+            "status": "inherit"
+          }
+        ]
+      },
+      {
+        "name": "FAILED",
+        "description": "Attempt to authenticate failed",
+        "status": "inherit",
+        "children": [
+          {
+            "name": "LOGIN",
+            "description": "Failed login",
+            "status": "inherit"
+          },
+          {
+            "name": "AUTHENTICATION",
+            "description": "Failed session authentication",
+            "status": "inherit"
+          },
+          {
+            "name": "LOGOUT",
+            "description": "Failed logout",
+            "status": "inherit"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "PERSISTENCE",
+    "description": "Common persistence errors. Operation may have been carried out, but the server failed to persist to database",
+    "status": 500,
+    "children": [
+      {
+        "name": "DEFAULT",
+        "description": "Common persistence errors.",
+        "status": "inherit",
+        "children": [
+          {
+            "name": "FAILED_TO_FETCH",
+            "description": "Fetch on database failed",
+            "status": "inherit"
+          },
+          {
+            "name": "FAILED_TO_PERSIST_OPERATION",
+            "description": "Save on database failed",
+            "status": "inherit"
+          },
+          {
+            "name": "DUMPED_TO_FILESYSTEM",
+            "description": "Failed transaction was persisted to filesystem as a last resort",
+            "status": "inherit"
+          },
+          {
+            "name": "UNEXPECTED_RESULT",
+            "description": "An operation on the database returned an unexpected result",
+            "status": "inherit"
+          },
+          {
+            "name": "DATABASE_UNREACHABLE",
+            "description": "Cannot reach the database",
+            "status": "inherit"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "RESPONSE",
+    "description": "General response error",
+    "status": 400,
+    "children": [
+      {
+        "name": "UNKNOWN_ERROR",
+        "description": "Unknown errors",
+        "status": "inherit",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "SERVER",
+    "description": "General server errors",
+    "status": 500,
+    "children": [
+      {
+        "name": "UNKNOWN_ERROR",
+        "description": "Unknown errors",
+        "status": "inherit",
+        "children": []
+      }
+    ]
+  }
+]

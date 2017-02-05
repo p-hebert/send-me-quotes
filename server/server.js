@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/routes');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../.config/server/index')[env];
+const Logger = require('./utilities/logger');
+global.logger = new Logger();
 
 // App
 const app = express();

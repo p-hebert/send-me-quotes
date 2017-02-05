@@ -38,3 +38,6 @@ jspm_packages
 
 # Configuration folder
 .config
+
+# Logger folder
+log
