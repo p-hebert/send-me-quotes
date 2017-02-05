@@ -11,6 +11,7 @@ services:
       - mongodb:mongodb
     depends_on:
      - mongodb
+     - elasticsearch
   #   - rsyslog
   #  logging:
   #    driver: syslog
@@ -26,7 +27,8 @@ services:
       context: ../
       dockerfile: ./docker/mongodb-dockerfile
     container_name: smqmongodb
-  #  depends_on:
+    depends_on:
+      - elasticsearch
   #   - rsyslog
   #  logging:
   #    driver: syslog
@@ -43,3 +45,8 @@ services:
   #    - "5514:514/udp"
   #  volumes:
   #    - /tmp:/var/log/syslog
+  elasticsearch:
+    image: elasticsearch:5.2.0-alpine
+    container_name: smq-esearch
+    volumes:
+      - /usr/share/elasticsearch/data

@@ -4,13 +4,21 @@ FROM mongo:3.4
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g mongoose
+    apt-get install -y nodejs;
+#Installing mongo-connector
+RUN apt-get install -y python-pip \
+                       python-dev \
+                       build-essential && \
+    pip install mongo-connector && \
+    pip install mongo-connector[elastic5] && \
+    pip install elastic2_doc_manager[elastic5];
 
 #Setting Up Mongo
 WORKDIR /var/www/smq
 COPY ./docker/mongo-setup.js mongo-setup.js
+COPY ./docker/mongodb-start.sh mongodb-start.sh
 COPY ./.config/mongo /var/www/.config/mongo
-#RUN mongod --port 27017 & node mongo-setup.js && mongod --shutdown
+#RUN mongod --port 27017 & node mongo-setup.js && mongod --shutdown;
 
+CMD ["/bin/sh", "mongodb-start.sh"]
 #CMD ["mongod", "--auth", "--port", "27017"]
